@@ -11,10 +11,7 @@ services:
       - wife.storage-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-  wife:
-    image: wife.storage
-    build:
-      context: backend
-      dockerfile: Dockerfile
+  storage:
+    build: ./
 volumes:
   wife.storage-data:

@@ -22,12 +22,12 @@ func (s *Service) Run() error {
 	log.Print("Starting service ...")
 
 	conf := &models.DatabaseConfig{}
-	conf.Database = "public"
+	conf.Database = "wife_storage"
 	conf.Host = "localhost"
 	conf.Port = 5432
 	conf.Provider = "postgres"
-	conf.User = "postgres"
-	conf.Password = "123456"
+	conf.User = "admin"
+	conf.Password = "password"
 
 	port := 8081
 
