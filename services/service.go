@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -45,7 +46,7 @@ func (s *Service) Run() error {
 
 	router.HandleFunc("/login", auth.Login).Methods("POST")
 
-	http.ListenAndServe(":"+string(port), router)
+	http.ListenAndServe(":"+fmt.Sprint(port), router)
 
 	log.Print("Service successfully started on port: ", port)
 
