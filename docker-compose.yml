@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "wife_storage"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "password"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - wife.storage-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  wife:
+    image: wife.storage
+    build:
+      context: backend
+      dockerfile: Dockerfile
+volumes:
+  wife.storage-data:
