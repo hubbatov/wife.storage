@@ -24,10 +24,6 @@ FROM alpine
 
 RUN apk update --no-cache && apk add --no-cache ca-certificates
 
-#COPY --from=builder /usr/share/zoneinfo/America/New_York /usr/share/zoneinfo/America/New_York
-
-#ENV TZ America/New_York
-
 WORKDIR /app
 
 COPY --from=builder /build/wife.storage /app/wife.storage

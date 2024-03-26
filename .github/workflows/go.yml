@@ -28,4 +28,4 @@ jobs:
       run: go test -v ./...
 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag wife.storage:$(date +%s)
+      run: docker build . --file Dockerfile --tag wife.storage:$(date +%s) && docker images | grep wife
