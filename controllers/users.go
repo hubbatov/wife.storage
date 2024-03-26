@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"wife.storage/auth"
@@ -53,10 +53,10 @@ func RegisterUser(w http.ResponseWriter, req *http.Request) {
 		errors.HandleError(errors.GenerateCustomError("Content-Type is not application/json"))
 	}
 
-	body, err := ioutil.ReadAll(req.Body)
+	body, err := io.ReadAll(req.Body)
 	errors.HandleError(errors.ConvertCustomError(err))
 
-	var userdata rest.RESTUser
+	var userdata rest.User
 	err = json.Unmarshal(body, &userdata)
 	errors.HandleError(errors.ConvertCustomError(err))
 

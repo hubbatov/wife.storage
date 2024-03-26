@@ -11,11 +11,11 @@ type User struct {
 	ID             int       `gorm:"primary_key" json:"id"`
 	Since          time.Time `json:"since"`
 	HashedPassword []byte    `json:"-"`
-	rest.RESTUser
+	rest.User
 }
 
 // CreateUser creates new user
-func CreateUser(userdata rest.RESTUser) User {
+func CreateUser(userdata rest.User) User {
 	a := User{}
 	a.Name = userdata.Name
 	a.Login = userdata.Login

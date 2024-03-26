@@ -17,7 +17,7 @@ func (d *DatabaseManager) User(userLogin, userPassword string) []models.User {
 	return table
 }
 
-func (d *DatabaseManager) CreateUser(userdata rest.RESTUser) []error {
+func (d *DatabaseManager) CreateUser(userdata rest.User) []error {
 	u := models.CreateUser(userdata)
 	return d.DataBase.Create(&u).GetErrors()
 }

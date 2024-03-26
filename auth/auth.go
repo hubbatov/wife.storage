@@ -30,7 +30,7 @@ func Login(w http.ResponseWriter, req *http.Request) {
 	body, err := io.ReadAll(req.Body)
 	errors.HandleError(errors.ConvertCustomError(err))
 
-	var userdata rest.RESTUser
+	var userdata rest.User
 	err = json.Unmarshal(body, &userdata)
 	errors.HandleError(errors.ConvertCustomError(err))
 
