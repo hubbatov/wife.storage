@@ -25,7 +25,8 @@ func (s *Service) Run() {
 
 	router.HandleFunc("/user", controllers.GetUser).Methods("GET")
 	router.HandleFunc("/users", controllers.GetUsers).Methods("GET")
-	router.HandleFunc("/users", controllers.RegisterUser).Methods("POST")
+
+	router.HandleFunc("/user", controllers.RegisterUser).Methods("POST")
 
 	router.HandleFunc("/login", auth.Login).Methods("POST")
 
