@@ -6,5 +6,8 @@ import (
 
 func main() {
 	s := new(services.Service)
-	s.Run()
+	err := s.Run()
+	if err != nil {
+		return
+	}
 }
