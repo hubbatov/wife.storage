@@ -30,6 +30,6 @@ RUN apk update --no-cache && apk add --no-cache ca-certificates
 
 WORKDIR /app
 
-COPY --from=builder /wife.storage /app/wife.storage
+COPY --from=builder /build/wife.storage /app/wife.storage
 
 CMD [". /wife.storage"]
