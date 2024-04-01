@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 
 	"github.com/gorilla/mux"
 
@@ -22,12 +24,12 @@ func (s *Service) Run() error {
 	log.Print("Starting service ...")
 
 	conf := &models.DatabaseConfig{}
-	conf.Database = "wife_storage"
-	conf.Host = "localhost"
-	conf.Port = 5432
-	conf.Provider = "postgres"
-	conf.User = "admin"
-	conf.Password = "password"
+	conf.Database = os.Getenv("WIFEDB")
+	conf.Host = os.Getenv("WIFEHOST")
+	conf.Port, _ = strconv.Atoi(os.Getenv("WIFEPORT"))
+	conf.Provider = os.Getenv("WIFEPROVIDER")
+	conf.User = os.Getenv("WIFEEUSER")
+	conf.Password = os.Getenv("WIFEPASSWORD")
 
 	port := 8081
 

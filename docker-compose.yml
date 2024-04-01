@@ -11,7 +11,21 @@ services:
       - wife.storage-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
   storage:
+    depends_on:
+      - postgres
     build: ./
+    environment:
+      WIFEDB: "wife_storage"
+      WIFEHOST: "postgres"
+      WIFEPORT: "5432"
+      WIFEPROVIDER: "postgres"
+      WIFEEUSER: "admin"
+      WIFEPASSWORD: "password"
 volumes:
   wife.storage-data:
