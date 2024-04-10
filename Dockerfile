@@ -9,7 +9,7 @@ ADD go.mod .
 ADD go.sum .
 RUN go mod download
 COPY . .
-RUN go build -ldflags="-s -w"
+RUN go build ./cmd/auth-service -ldflags="-s -w"
 
 FROM alpine
 
