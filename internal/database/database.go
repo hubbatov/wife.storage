@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"wife.storage/errors"
-	"wife.storage/models"
+	"wife/internal/api"
+	"wife/internal/errors"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" //pg adapter
@@ -20,7 +20,7 @@ type DatabaseManager struct {
 }
 
 // CreateDb creates new DatabaseManager
-func CreateDb(config *models.DatabaseConfig) error {
+func CreateDb(config *DatabaseConfig) error {
 	dbinfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		config.Host, config.Port, config.User, config.Password, config.Database)
 
@@ -32,7 +32,7 @@ func CreateDb(config *models.DatabaseConfig) error {
 
 	if err == nil {
 		log.Println("Migrate ...")
-		db.AutoMigrate(&models.User{})
+		db.AutoMigrate(&User{})
 
 		DBManager.DataBase = db
 
@@ -41,4 +41,21 @@ func CreateDb(config *models.DatabaseConfig) error {
 	}
 
 	return err
+}
+
+func (d *DatabaseManager) Users() []User {
+	var table []User
+	d.DataBase.Order("id").Find(&table)
+	return table
+}
+
+func (d *DatabaseManager) User(userLogin, userPassword string) []User {
+	var table []User
+	d.DataBase.Order("id").Find(&table)
+	return table
+}
+
+func (d *DatabaseManager) CreateUser(userdata api.User) []error {
+	u := CreateUser(userdata)
+	return d.DataBase.Create(&u).GetErrors()
 }

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"wife.storage/services"
+	"wife/internal/services"
 )
 
 func main() {
-	s := new(services.Service)
+	s := new(services.AuthService)
 	err := s.Run()
 	if err != nil {
 		return

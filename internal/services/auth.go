@@ -9,21 +9,18 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"wife.storage/auth"
-	"wife.storage/controllers"
-	"wife.storage/database"
-	"wife.storage/models"
+	"wife/internal/database"
+	"wife/internal/handlers"
 )
 
-// Service for data access
-type Service struct {
+type AuthService struct {
 }
 
 // Run service
-func (s *Service) Run() error {
-	log.Print("Starting service ...")
+func (s *AuthService) Run() error {
+	log.Print("Starting auth service ...")
 
-	conf := &models.DatabaseConfig{}
+	conf := &database.DatabaseConfig{}
 	conf.Database = os.Getenv("WIFEDB")
 	conf.Host = os.Getenv("WIFEHOST")
 	conf.Port, _ = strconv.Atoi(os.Getenv("WIFEPORT"))
@@ -41,12 +38,9 @@ func (s *Service) Run() error {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/user", controllers.GetUser).Methods("GET")
-	router.HandleFunc("/users", controllers.GetUsers).Methods("GET")
-
-	router.HandleFunc("/user", controllers.RegisterUser).Methods("POST")
-
-	router.HandleFunc("/login", auth.Login).Methods("POST")
+	router.HandleFunc("/users", handlers.GetUsers).Methods("GET")
+	router.HandleFunc("/user", handlers.RegisterUser).Methods("POST")
+	router.HandleFunc("/login", handlers.Login).Methods("POST")
 
 	http.ListenAndServe(":"+fmt.Sprint(port), router)
 

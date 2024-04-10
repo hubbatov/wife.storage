@@ -1,21 +1,22 @@
-package models
+package database
 
 import (
 	"time"
-
-	"wife.storage/rest"
+	"wife/internal/api"
 )
 
 // User represents typical user of service
 type User struct {
 	ID             int       `gorm:"primary_key" json:"id"`
+	Name           string    `gorm:"type:varchar(100)" json:"name"`
+	Login          string    `gorm:"type:varchar(100);unique" json:"login"`
+	Password       string    `gorm:"type:varchar(100)" json:"password"`
 	Since          time.Time `json:"since"`
 	HashedPassword []byte    `json:"-"`
-	rest.User
 }
 
 // CreateUser creates new user
-func CreateUser(userdata rest.User) User {
+func CreateUser(userdata api.User) User {
 	a := User{}
 	a.Name = userdata.Name
 	a.Login = userdata.Login

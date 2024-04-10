@@ -1,4 +1,4 @@
-module wife.storage
+module wife
 
 go 1.20
 

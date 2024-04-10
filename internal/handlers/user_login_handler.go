@@ -1,4 +1,4 @@
-package auth
+package handlers
 
 import (
 	"encoding/json"
@@ -7,10 +7,9 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"wife.storage/database"
-	"wife.storage/errors"
-	"wife.storage/models"
-	"wife.storage/rest"
+	"wife/internal/api"
+	"wife/internal/database"
+	"wife/internal/errors"
 
 	"strings"
 
@@ -30,7 +29,7 @@ func Login(w http.ResponseWriter, req *http.Request) {
 	body, err := io.ReadAll(req.Body)
 	errors.HandleError(errors.ConvertCustomError(err))
 
-	var userdata rest.User
+	var userdata api.User
 	err = json.Unmarshal(body, &userdata)
 	errors.HandleError(errors.ConvertCustomError(err))
 
@@ -45,13 +44,13 @@ func Login(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func updatePasswordHash(user *models.User) {
+func updatePasswordHash(user *database.User) {
 	if user != nil {
 		user.HashedPassword, _ = bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	}
 }
 
-func getUser(login string) (user models.User) {
+func getUser(login string) (user database.User) {
 	database.DBManager.DataBase.Where("login = ?", login).First(&user)
 	return
 }
@@ -71,7 +70,7 @@ func getUserData(authdata string) (user, password string) {
 }
 
 // GetUserByID returns user with id = userId
-func GetUserByID(userID int) (user models.User) {
+func GetUserByID(userID int) (user database.User) {
 	database.DBManager.DataBase.Where("id = ?", userID).First(&user)
 	return
 }
