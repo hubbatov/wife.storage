@@ -15,6 +15,6 @@ FROM alpine
 
 RUN apk update --no-cache && apk add --no-cache ca-certificates
 WORKDIR /app
-COPY --from=builder /build/wife /app/wife
+COPY --from=builder /build/auth-service /app/auth-service
 
-CMD ["/app/wife"]
+CMD ["/app/auth-service"]
