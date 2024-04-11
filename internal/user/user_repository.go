@@ -1,26 +1,23 @@
-package database
+package user
 
 import (
 	"fmt"
 	"log"
 
-	"wife/internal/api"
+	"wife/configs"
 	"wife/internal/errors"
+	"wife/utils"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" //pg adapter
 )
 
-// DBManager is a standalone DatabaseManager object
-var DBManager DatabaseManager
-
 // DatabaseManager (holds database connection)
-type DatabaseManager struct {
+type Repository struct {
 	DataBase *gorm.DB
 }
 
-// CreateDb creates new DatabaseManager
-func CreateDb(config *DatabaseConfig) error {
+func NewRepository(config *configs.DatabaseConfig) (*Repository, error) {
 	dbinfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		config.Host, config.Port, config.User, config.Password, config.Database)
 
@@ -34,28 +31,40 @@ func CreateDb(config *DatabaseConfig) error {
 		log.Println("Migrate ...")
 		db.AutoMigrate(&User{})
 
-		DBManager.DataBase = db
-
 		log.Println("Database is ready.")
-		return nil
+		return &Repository{
+			DataBase: db,
+		}, nil
 	}
 
-	return err
+	return nil, err
 }
 
-func (d *DatabaseManager) Users() []User {
+func (d *Repository) Users() []User {
 	var table []User
 	d.DataBase.Order("id").Find(&table)
 	return table
 }
 
-func (d *DatabaseManager) User(userLogin, userPassword string) []User {
+func (d *Repository) User(userLogin, userPassword string) []User {
 	var table []User
 	d.DataBase.Order("id").Find(&table)
 	return table
 }
 
-func (d *DatabaseManager) CreateUser(userdata api.User) []error {
-	u := CreateUser(userdata)
+func (d *Repository) Exists(login string, password string) bool {
+	var user User
+	d.DataBase.Where("login = ?", login).First(&user)
+
+	err := utils.CheckPassword(password, user.Password)
+
+	return err == nil
+}
+
+func (d *Repository) CreateUser(dto UserDto) []error {
+	u, err := FromDto(dto)
+	if err != nil {
+		return []error{err}
+	}
 	return d.DataBase.Create(&u).GetErrors()
 }
