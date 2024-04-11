@@ -9,12 +9,12 @@ ADD go.mod .
 ADD go.sum .
 RUN go mod download
 COPY . .
-RUN go build -ldflags="-s -w"
+RUN go build ./cmd/auth-service
 
 FROM alpine
 
 RUN apk update --no-cache && apk add --no-cache ca-certificates
 WORKDIR /app
-COPY --from=builder /build/wife.storage /app/wife.storage
+COPY --from=builder /build/auth-service /app/auth-service
 
-CMD ["/app/wife.storage"]
+CMD ["/app/auth-service"]
