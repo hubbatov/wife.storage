@@ -27,15 +27,19 @@ func main() {
 	repository, err := user.NewRepository(conf)
 
 	if err != nil {
-		log.Fatal("Failed to start service: ", err)
+		log.Fatal("Failed to start auth service: ", err)
 	}
 
+	log.Print("Creating service layer...")
 	service := user.NewService(repository)
+
+	log.Print("Creating endpoint layer...")
 	endpoint := user.NewEndpoint(service)
 
+	log.Print("Creating router...")
 	usersRouter := router.NewUserRouter(endpoint)
-	err = usersRouter.Run(8081)
-	if err != nil {
-		log.Fatal("Failed to start service: ", err)
-	}
+
+	usersRouter.Run(8090)
+
+	log.Print("Started auth service!")
 }

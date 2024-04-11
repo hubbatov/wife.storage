@@ -26,11 +26,7 @@ func NewUserRouter(e *user.Endpoint) *Router {
 	}
 }
 
-func (r *Router) Run(port int) error {
-	err := http.ListenAndServe(":"+fmt.Sprint(port), r.router)
-	if err == nil {
-		log.Print("Router successfully started on port: ", port)
-	}
-
-	return err
+func (r *Router) Run(port int) {
+	log.Print("Router started on port: ", port)
+	http.ListenAndServe(":"+fmt.Sprint(port), r.router)
 }

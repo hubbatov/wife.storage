@@ -27,5 +27,7 @@ services:
       WIFEPROVIDER: "postgres"
       WIFEEUSER: "admin"
       WIFEPASSWORD: "password"
+    ports:
+      - 8090:8090
 volumes:
   wife.storage-data:
