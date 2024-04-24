@@ -1,4 +1,4 @@
-package models
+package configs
 
 type DatabaseConfig struct {
 	//Host - database host
