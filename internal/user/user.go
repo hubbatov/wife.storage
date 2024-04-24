@@ -3,14 +3,17 @@ package user
 import (
 	"time"
 	"wife/utils"
+
+	"wife/internal/reminder"
 )
 
 type User struct {
-	ID       int       `gorm:"primary_key" json:"id"`
-	Name     string    `gorm:"type:varchar(100)" json:"name"`
-	Login    string    `gorm:"type:varchar(100);unique" json:"login"`
-	Password string    `gorm:"type:varchar(100)" json:"password"`
-	Since    time.Time `json:"since"`
+	ID        int       `gorm:"primary_key" json:"id"`
+	Name      string    `gorm:"type:varchar(100)" json:"name"`
+	Login     string    `gorm:"type:varchar(100);unique" json:"login"`
+	Password  string    `gorm:"type:varchar(100)" json:"password"`
+	Since     time.Time `json:"since"`
+	Reminders []reminder.Reminder
 }
 
 type UserDto struct {

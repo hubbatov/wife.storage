@@ -8,6 +8,8 @@ import (
 	"wife/internal/router"
 	"wife/internal/user"
 
+	"wife/internal/repository"
+
 	"github.com/joho/godotenv"
 )
 
@@ -24,7 +26,7 @@ func main() {
 	conf.User = os.Getenv("WIFEEUSER")
 	conf.Password = os.Getenv("WIFEPASSWORD")
 
-	repository, err := user.NewRepository(conf)
+	repository, err := repository.NewRepository(conf)
 
 	if err != nil {
 		log.Fatal("Failed to start auth service: ", err)

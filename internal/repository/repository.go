@@ -1,4 +1,4 @@
-package user
+package repository
 
 import (
 	"fmt"
@@ -6,7 +6,8 @@ import (
 
 	"wife/configs"
 	"wife/internal/errors"
-	"wife/utils"
+	"wife/internal/reminder"
+	"wife/internal/user"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" //pg adapter
@@ -29,7 +30,8 @@ func NewRepository(config *configs.DatabaseConfig) (*Repository, error) {
 
 	if err == nil {
 		log.Println("Migrate ...")
-		db.AutoMigrate(&User{})
+		db.AutoMigrate(&user.User{})
+		db.AutoMigrate(&reminder.Reminder{})
 
 		log.Println("Database is ready.")
 		return &Repository{
@@ -38,33 +40,4 @@ func NewRepository(config *configs.DatabaseConfig) (*Repository, error) {
 	}
 
 	return nil, err
-}
-
-func (d *Repository) Users() []User {
-	var table []User
-	d.DataBase.Order("id").Find(&table)
-	return table
-}
-
-func (d *Repository) User(userLogin, userPassword string) []User {
-	var table []User
-	d.DataBase.Order("id").Find(&table)
-	return table
-}
-
-func (d *Repository) Exists(login string, password string) bool {
-	var user User
-	d.DataBase.Where("login = ?", login).First(&user)
-
-	err := utils.CheckPassword(password, user.Password)
-
-	return err == nil
-}
-
-func (d *Repository) CreateUser(dto UserDto) []error {
-	u, err := FromDto(dto)
-	if err != nil {
-		return []error{err}
-	}
-	return d.DataBase.Create(&u).GetErrors()
 }
